@@ -2,12 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { ReduxProvider } from "./store/store.js"; 
 import reportWebVitals from './reportWebVitals';
+
+
+// You can now use the store to dispatch actions, and subscribe to changes.
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ReduxProvider>
+      <App />
+    </ReduxProvider>
   </React.StrictMode>
 );
 
