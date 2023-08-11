@@ -1,6 +1,6 @@
 import { ADD_USER_DATA } from './actions';
 
-const initialState = {
+export const initialState = {
     userData: []
 };
 
