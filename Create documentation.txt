@@ -1,0 +1,179 @@
+User
+Update Readme.md with Application description: 2 paragraphs, 4-10 Sentences and Information on how to install/run the developed application locally. import React from 'react';
+import UserForm from './components/form.jsx'; // Assuming the path
+import ItemList from './components/list.jsx';
+
+function App() {
+
+    return (
+        <>
+            <div>
+                <UserForm />
+            </div>
+            <div className="container">
+                <ItemList />
+
+            </div>
+        </>
+
+    );
+}
+
+export default App;
+import React, { useState } from 'react';
+import validator from 'validator';
+import store from '../store/store.js';
+import { addUserData } from '../store/actions.js';
+import './form.css';
+
+
+function UserForm() {
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        message: ''
+    });
+    const [errors, setErrors] = useState({});
+
+    const validateFields = () => {
+        const newErrors = {};
+
+        if (!formData.firstName) newErrors.firstName = 'First name is required';
+        if (!formData.lastName) newErrors.lastName = 'Last name is required';
+        if (!validator.isEmail(formData.email)) newErrors.email = 'Invalid email address';
+        if (!formData.message) newErrors.message = 'Message is required';
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validateFields()) {
+            store.dispatch(addUserData(formData));
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            />
+            {errors.firstName && <span>{errors.firstName}</span>}
+
+            <input
+                type="text"
+                placeholder="Last Name"
+                value={formData.lastName}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            />
+            {errors.lastName && <span>{errors.lastName}</span>}
+
+            <input
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+            {errors.email && <span>{errors.email}</span>}
+
+            <textarea
+                placeholder="Message"
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            />
+            {errors.message && <span>{errors.message}</span>}
+
+            <button type="submit">Submit</button>
+        </form>
+    );
+}
+
+export default UserForm;
+// ItemList.js
+import React, { useState, useEffect } from 'react';
+import store from '../store/store';
+
+import './list.css';
+
+const ItemList = () => {
+  const [items, setItems] = useState(store.getState().userData);
+  console.log(items);
+
+  useEffect(() => {
+    // This function is called whenever the store state changes
+    const handleStoreChange = () => {
+      setItems(store.getState().userData);
+    };
+
+    // Subscribe to the store changes
+    const unsubscribe = store.subscribe(handleStoreChange);
+
+    // Cleanup: Unsubscribe from the store changes when the component is unmounted
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((item, index) => (
+          <tr key={index}>
+            <td>{item.firstName}</td>
+            <td>{item.lastName}</td>
+            <td>{item.email}</td>
+            <td>{item.message}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+export default ItemList;
+
+ChatGPT
+Application Description
+This React application is designed with user-interactivity at its core. At its heart is a UserForm component, allowing users to input their first name, last name, email address, and a message. To ensure the accuracy and reliability of the data, the form comes integrated with robust validation checks, preventing the input of erroneous data. Once the user submits valid data, it gets stored and can be viewed in the ItemList component. The ItemList is a dynamic component that showcases a table of the user-submitted data, updating in real-time as more entries are added. By using the Redux store, the application maintains a consistent state, enabling seamless data sharing between components.
+
+Installation & Running Locally
+Clone the repository:
+
+bash
+Copy code
+git clone <repository-url>
+Navigate to the application directory:
+
+bash
+Copy code
+cd <repository-name>
+Install the required dependencies:
+
+bash
+Copy code
+npm install
+Run the application:
+
+bash
+Copy code
+npm start
+Once you execute the above commands, the application should start and be available at http://localhost:3000/ or the specified port in your environment. Navigate to the URL in your browser to view and interact with the application.
+
+
+
+
+User
+This is package.json file. Use it to update description 
+ChatGPT
+Sure, in order to provide a relevant description, I would need to see the contents of the package.json file. Please provide it so I can tailor the description accordingly.
